@@ -30,4 +30,12 @@ public class LocaleTest {
         System.out.println("first locale: " + locales[0] + " "
                            + locales[0].hashCode());
     }
+
+    @Test
+    public void printAll() {
+        final Locale[] locales = Locale.getAvailableLocales();
+	for (int i = 0; i < locales.length; i++) {
+	    System.out.printf("%03d %s\n", i, locales[i]);
+	}
+    }
 }

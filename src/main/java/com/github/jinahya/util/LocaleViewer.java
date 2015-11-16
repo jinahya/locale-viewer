@@ -33,9 +33,6 @@ public class LocaleViewer {
         INDEX() {
             @Override
             Object value(int row, int column, final Locale locale) {
-                if (row == 0) {
-                    System.out.println("locale: " + locale.toString());
-                }
                 return row;
             }
         },

@@ -6,7 +6,7 @@
   <!-- The Basics -->
   <groupId>com.github.jinahya</groupId>
   <artifactId>locale-viewer</artifactId>
-  <version>0.1-SNAPSHOT</version>
+  <version>0.1</version>
   <packaging>jar</packaging>
   <dependencyManagement />
   <dependencies>
@@ -72,7 +72,7 @@
       </plugin>
     </plugins>
   </build>
-  <reporting/>
+  <reporting />
 
   <!-- More Project Information -->
   <name>${project.artifactId}</name>
@@ -108,11 +108,11 @@
     <connection>scm:git:git@github.com:jinahya/locale-viewer.git</connection>
     <developerConnection>scm:git:git@github.com:jinahya/locale-viewer.git</developerConnection>
     <url>https://github.com/jinahya/locale-viewer</url>
-    <tag>HEAD</tag>
+    <tag>0.1</tag>
   </scm>
   <prerequisites />
   <repositories />
   <pluginRepositories />
-  <distributionManagement/>
-  <profiles/>
+  <distributionManagement />
+  <profiles />
 </project>

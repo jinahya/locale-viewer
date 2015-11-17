@@ -39,6 +39,9 @@ public class LocaleViewer {
         NAME() {
             @Override
             Object value(int row, int column, final Locale locale) {
+                if (Locale.ROOT == locale) {
+                    return "ROOT";
+                }
                 return locale.toString();
             }
         },

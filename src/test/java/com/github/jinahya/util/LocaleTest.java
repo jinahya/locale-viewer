@@ -29,9 +29,11 @@ public class LocaleTest {
         final Locale[] locales = Locale.getAvailableLocales();
         System.out.println("first locale: " + locales[0] + " "
                            + locales[0].hashCode());
+        System.out.println("first locale == Locale.ROOT: "
+			   + (locales[0] == Locale.ROOT));
     }
 
-    @Test
+    @Test(enabled = false)
     public void printAll() {
         final Locale[] locales = Locale.getAvailableLocales();
 	for (int i = 0; i < locales.length; i++) {

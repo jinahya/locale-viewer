@@ -15,10 +15,12 @@
  */
 package com.github.jinahya.util;
 
-import java.util.Locale;
 import org.testng.annotations.Test;
 
+import java.util.Locale;
+
 /**
+ * A class for testing {@link Locale}.
  *
  * @author Jin Kwon &lt;jinahya_at_gmail.com&gt;
  */
@@ -27,17 +29,15 @@ public class LocaleTest {
     @Test
     public void printFirstLocale() {
         final Locale[] locales = Locale.getAvailableLocales();
-        System.out.println("first locale: " + locales[0] + " "
-                           + locales[0].hashCode());
-        System.out.println("first locale == Locale.ROOT: "
-			   + (locales[0] == Locale.ROOT));
+        System.out.println("first locale: " + locales[0] + " " + locales[0].hashCode());
+        System.out.println("first locale == Locale.ROOT: " + (locales[0] == Locale.ROOT));
     }
 
     @Test(enabled = false)
     public void printAll() {
         final Locale[] locales = Locale.getAvailableLocales();
-	for (int i = 0; i < locales.length; i++) {
-	    System.out.printf("%03d %s\n", i, locales[i]);
-	}
+        for (int i = 0; i < locales.length; i++) {
+            System.out.printf("%03d %s\n", i, locales[i]);
+        }
     }
 }

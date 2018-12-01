@@ -15,33 +15,22 @@
  */
 package com.github.jinahya.util;
 
-import java.awt.Container;
-import java.awt.event.WindowEvent;
-import java.util.Locale;
-import java.util.MissingResourceException;
-import java.util.Objects;
-import javax.swing.JFrame;
-import javax.swing.JRootPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
+import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
+import java.awt.*;
+import java.awt.event.WindowEvent;
+import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class LocaleViewer {
 
     private enum Column {
-        INDEX() {
-            @Override
-            Object value(int row, int column, final Locale locale) {
-                return row;
-            }
-        },
+
         NAME() {
             @Override
             Object value(int row, int column, final Locale locale) {
-                if (Locale.ROOT == locale) {
-                    return "ROOT";
-                }
                 return locale.toString();
             }
         },
@@ -51,10 +40,34 @@ public class LocaleViewer {
                 return locale.getDisplayLanguage(locale);
             }
         },
+        LANGUAGE_USER() {
+            @Override
+            Object value(int row, int column, final Locale locale) {
+                return locale.getDisplayLanguage();
+            }
+        },
+        LANGUAGE_US() {
+            @Override
+            Object value(int row, int column, final Locale locale) {
+                return locale.getDisplayLanguage(Locale.US);
+            }
+        },
         COUNTRY {
             @Override
             Object value(int row, int column, final Locale locale) {
                 return locale.getDisplayCountry(locale);
+            }
+        },
+        COUNTRY_USER {
+            @Override
+            Object value(int row, int column, final Locale locale) {
+                return locale.getDisplayCountry();
+            }
+        },
+        COUNTRY_US {
+            @Override
+            Object value(int row, int column, final Locale locale) {
+                return locale.getDisplayCountry(Locale.US);
             }
         },
         LAN() {
@@ -95,25 +108,24 @@ public class LocaleViewer {
 
     public static void main(final String[] args) {
         new JFrame("Locale Viewer") {
-
             @Override
             protected JRootPane createRootPane() {
                 return new JRootPane() {
-
                     @Override
                     protected Container createContentPane() {
                         return new JScrollPane(new JTable() {
-
                             @Override
                             protected TableModel createDefaultDataModel() {
-                                final Locale[] rows
-                                        = Locale.getAvailableLocales();
+                                //final Locale[] rows = Locale.getAvailableLocales();
+                                final List<Locale> rows = Arrays.stream(Locale.getAvailableLocales())
+                                        .filter(v -> v != Locale.ROOT)
+                                        .sorted(Comparator.comparing(Locale::getDisplayName))
+                                        .collect(Collectors.toList());
                                 final Column[] columns = Column.values();
                                 return new AbstractTableModel() {
-
                                     @Override
                                     public int getRowCount() {
-                                        return rows.length;
+                                        return rows.size();
                                     }
 
                                     @Override
@@ -127,9 +139,8 @@ public class LocaleViewer {
                                     }
 
                                     @Override
-                                    public Object getValueAt(final int r,
-                                                             final int c) {
-                                        return columns[c].value(r, c, rows[r]);
+                                    public Object getValueAt(final int r, final int c) {
+                                        return columns[c].value(r, c, rows.get(r));
                                     }
                                 };
                             }
@@ -153,5 +164,4 @@ public class LocaleViewer {
             }
         }.setVisible(true);
     }
-
 }

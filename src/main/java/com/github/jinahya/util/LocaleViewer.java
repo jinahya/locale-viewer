@@ -17,8 +17,10 @@ package com.github.jinahya.util;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableModel;
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.util.List;
 import java.util.*;
@@ -75,11 +77,21 @@ public class LocaleViewer {
             Object value(int row, int column, final Locale locale) {
                 return locale.getDisplayScript();
             }
+
+            @Override
+            String toolTipText() {
+                return "getDisplayScript()";
+            }
         },
         SCRIPT_US {
             @Override
             Object value(int row, int column, final Locale locale) {
                 return locale.getDisplayScript(Locale.US);
+            }
+
+            @Override
+            String toolTipText() {
+                return "getDisplayScript(Locale.US)";
             }
         },
         COUNTRY {
@@ -129,6 +141,11 @@ public class LocaleViewer {
             Object value(int row, int column, final Locale locale) {
                 return locale.getDisplayVariant(Locale.US);
             }
+
+            @Override
+            String toolTipText() {
+                return "getDisplayVariant(Locale.US)";
+            }
         },
         LAN() {
             @Override
@@ -138,6 +155,11 @@ public class LocaleViewer {
                 } catch (final MissingResourceException mre) {
                     return "N/A";
                 }
+            }
+
+            @Override
+            String toolTipText() {
+                return "getISO3Language()";
             }
         },
         CON() {
@@ -149,23 +171,15 @@ public class LocaleViewer {
                     return "N/A";
                 }
             }
-        }
-//        ,
-//        LN() {
-//            @Override
-//            Object value(int row, int column, final Locale locale) {
-//                return locale.getLanguage();
-//            }
-//        },
-//        CO() {
-//            @Override
-//            Object value(int row, int column, final Locale locale) {
-//                return locale.getCountry();
-//            }
-//        }
-        ;
+        };
+
+        static final Column[] VALUES = values();
 
         abstract Object value(int row, int column, Locale locale);
+
+        String toolTipText() {
+            return null;
+        }
     }
 
     public static void main(final String[] args) {
@@ -177,13 +191,26 @@ public class LocaleViewer {
                     protected Container createContentPane() {
                         return new JScrollPane(new JTable() {
                             @Override
+                            protected JTableHeader createDefaultTableHeader() {
+                                final JTableHeader defaultTableHeader = super.createDefaultTableHeader();
+                                return new JTableHeader(defaultTableHeader.getColumnModel()) {
+                                    @Override
+                                    public String getToolTipText(final MouseEvent event) {
+                                        final Point point = event.getPoint();
+                                        final int columnIndex = getColumnModel().getColumnIndexAtX(point.x);
+                                        int modelIndex = getColumnModel().getColumn(columnIndex).getModelIndex();
+                                        return Column.VALUES[modelIndex].toolTipText();
+                                    }
+                                };
+                            }
+
+                            @Override
                             protected TableModel createDefaultDataModel() {
                                 //final Locale[] rows = Locale.getAvailableLocales();
                                 final List<Locale> rows = Arrays.stream(Locale.getAvailableLocales())
                                         .filter(v -> v != Locale.ROOT)
                                         .sorted(Comparator.comparing(Locale::getDisplayName))
                                         .collect(Collectors.toList());
-                                final Column[] columns = Column.values();
                                 return new AbstractTableModel() {
                                     @Override
                                     public int getRowCount() {
@@ -192,17 +219,17 @@ public class LocaleViewer {
 
                                     @Override
                                     public int getColumnCount() {
-                                        return columns.length;
+                                        return Column.VALUES.length;
                                     }
 
                                     @Override
                                     public String getColumnName(final int c) {
-                                        return columns[c].name();
+                                        return Column.VALUES[c].name();
                                     }
 
                                     @Override
                                     public Object getValueAt(final int r, final int c) {
-                                        return columns[c].value(r, c, rows.get(r));
+                                        return Column.VALUES[c].value(r, c, rows.get(r));
                                     }
                                 };
                             }

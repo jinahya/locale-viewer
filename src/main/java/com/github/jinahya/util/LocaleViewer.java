@@ -37,10 +37,16 @@ public class LocaleViewer {
         LANGUAGE() {
             @Override
             Object value(int row, int column, final Locale locale) {
+                return locale.getLanguage();
+            }
+        },
+        LANGUAGE_DL() {
+            @Override
+            Object value(int row, int column, final Locale locale) {
                 return locale.getDisplayLanguage(locale);
             }
         },
-        LANGUAGE_USER() {
+        LANGUAGE_DU() {
             @Override
             Object value(int row, int column, final Locale locale) {
                 return locale.getDisplayLanguage();
@@ -52,13 +58,43 @@ public class LocaleViewer {
                 return locale.getDisplayLanguage(Locale.US);
             }
         },
+        SCRIPT {
+            @Override
+            Object value(int row, int column, final Locale locale) {
+                return locale.getScript();
+            }
+        },
+        SCRIPT_DL {
+            @Override
+            Object value(int row, int column, final Locale locale) {
+                return locale.getDisplayScript(locale);
+            }
+        },
+        SCRIPT_DU {
+            @Override
+            Object value(int row, int column, final Locale locale) {
+                return locale.getDisplayScript();
+            }
+        },
+        SCRIPT_US {
+            @Override
+            Object value(int row, int column, final Locale locale) {
+                return locale.getDisplayScript(Locale.US);
+            }
+        },
         COUNTRY {
+            @Override
+            Object value(int row, int column, final Locale locale) {
+                return locale.getCountry();
+            }
+        },
+        COUNTRY_DL {
             @Override
             Object value(int row, int column, final Locale locale) {
                 return locale.getDisplayCountry(locale);
             }
         },
-        COUNTRY_USER {
+        COUNTRY_DU {
             @Override
             Object value(int row, int column, final Locale locale) {
                 return locale.getDisplayCountry();
@@ -68,6 +104,30 @@ public class LocaleViewer {
             @Override
             Object value(int row, int column, final Locale locale) {
                 return locale.getDisplayCountry(Locale.US);
+            }
+        },
+        VARIANT {
+            @Override
+            Object value(int row, int column, final Locale locale) {
+                return locale.getVariant();
+            }
+        },
+        VARIANT_DL {
+            @Override
+            Object value(int row, int column, final Locale locale) {
+                return locale.getDisplayVariant(locale);
+            }
+        },
+        VARIANT_DU {
+            @Override
+            Object value(int row, int column, final Locale locale) {
+                return locale.getDisplayVariant();
+            }
+        },
+        VARIANT_US {
+            @Override
+            Object value(int row, int column, final Locale locale) {
+                return locale.getDisplayVariant(Locale.US);
             }
         },
         LAN() {
@@ -89,19 +149,21 @@ public class LocaleViewer {
                     return "N/A";
                 }
             }
-        },
-        LN() {
-            @Override
-            Object value(int row, int column, final Locale locale) {
-                return locale.getLanguage();
-            }
-        },
-        CO() {
-            @Override
-            Object value(int row, int column, final Locale locale) {
-                return locale.getCountry();
-            }
-        };
+        }
+//        ,
+//        LN() {
+//            @Override
+//            Object value(int row, int column, final Locale locale) {
+//                return locale.getLanguage();
+//            }
+//        },
+//        CO() {
+//            @Override
+//            Object value(int row, int column, final Locale locale) {
+//                return locale.getCountry();
+//            }
+//        }
+        ;
 
         abstract Object value(int row, int column, Locale locale);
     }

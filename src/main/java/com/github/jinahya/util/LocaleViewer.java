@@ -209,7 +209,6 @@ public class LocaleViewer {
 
                             @Override
                             protected TableModel createDefaultDataModel() {
-                                //final Locale[] rows = Locale.getAvailableLocales();
                                 final List<Locale> rows = Arrays.stream(Locale.getAvailableLocales())
                                         .filter(v -> v != Locale.ROOT)
                                         .sorted(Comparator.comparing(Locale::getDisplayName))
